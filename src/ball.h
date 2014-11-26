@@ -17,6 +17,8 @@ class Ball {
         int getSpeed();
         void setPosition(float x, float y);
         void move(float x, float y);
+        float width();
+        float height();
 };
 
 #endif // BALL_H

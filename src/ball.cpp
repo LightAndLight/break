@@ -31,3 +31,11 @@ void Ball::setPosition(float x, float y) {
 void Ball::move(float x, float y) {
     sprite.move(x,y); 
 }
+
+float Ball::width() {
+    return sprite.getGlobalBounds().width;
+}
+
+float Ball::height() {
+    return sprite.getGlobalBounds().height;
+}
