@@ -1,5 +1,6 @@
 #include "game.h"
 #include "paddle.h"
+#include "ball.h"
 
 void Game::quit() {
     run = false;
@@ -48,8 +49,12 @@ Game::Game() : window(sf::VideoMode(800,600),"Break") {
 
     paddle = Paddle(sheet,sf::IntRect(0,0,16,4));
     paddle.setScale(4.0,4.0);
-    paddle.setPosition(400-paddle.getGlobalBounds().width/2,
-                       600-paddle.getGlobalBounds().height-10);
+    paddle.setPosition(400-paddle.width()/2,
+                       600-paddle.height()-10);
+
+    ball = Ball(sheet,sf::IntRect(16,0,4,4));
+    ball.setScale(4.0,4.0);
+    ball.setPosition(400-ball.width()/2,300-ball.height()/2);
 
     last_call = clock.getElapsedTime();
 }
@@ -82,13 +87,13 @@ void Game::update() {
 
     switch (paddle.getDir()) {
         case LEFT:
-            if (paddle.getGlobalBounds().left - paddle.getSpeed()*dt > 0.0) 
+            if (paddle.left() - paddle.getSpeed()*dt > 0.0) 
                 paddle.move(-paddle.getSpeed()*dt,0.0);
             break;
 
         case RIGHT:
-            if (paddle.getGlobalBounds().left + paddle.getSpeed()*dt 
-                    < 800.0 - paddle.getGlobalBounds().width)
+            if (paddle.left() + paddle.getSpeed()*dt 
+                    < 800.0 - paddle.width())
                 paddle.move(paddle.getSpeed()*dt,0.0);
             break;
 
@@ -103,6 +108,7 @@ void Game::draw() {
     window.clear(sf::Color(200,200,200,255)); 
 
     paddle.draw(window);
+    ball.draw(window);
 
     window.display();
 }
