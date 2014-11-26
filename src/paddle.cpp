@@ -32,8 +32,20 @@ void Paddle::setPosition(float x, float y) {
     sprite.setPosition(x,y);
 }
 
-sf::FloatRect Paddle::getGlobalBounds() {
-    return sprite.getGlobalBounds();
+float Paddle::width() {
+    return sprite.getGlobalBounds().width;
+}
+
+float Paddle::height() {
+    return sprite.getGlobalBounds().height;
+}
+
+float Paddle::left() {
+    return sprite.getGlobalBounds().left;
+}
+
+float Paddle::top() {
+    return sprite.getGlobalBounds().top;
 }
 
 void Paddle::move(float x, float y) {
