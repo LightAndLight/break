@@ -39,3 +39,7 @@ float Ball::width() {
 float Ball::height() {
     return sprite.getGlobalBounds().height;
 }
+
+void Ball::draw(sf::RenderWindow& w) {
+    w.draw(sprite);
+}

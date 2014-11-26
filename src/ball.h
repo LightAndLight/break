@@ -19,6 +19,7 @@ class Ball {
         void move(float x, float y);
         float width();
         float height();
+        void draw(sf::RenderWindow& w);
 };
 
 #endif // BALL_H
