@@ -1,4 +1,5 @@
 #include "game.h"
+#include "paddle.h"
 
 void Game::quit() {
     run = false;
@@ -12,11 +13,11 @@ void Game::key_press(sf::Keyboard::Key k) {
             break;
 
         case sf::Keyboard::Left:
-            paddle_dir = LEFT;
+            paddle.setDir(LEFT);
             break;
 
         case sf::Keyboard::Right:
-            paddle_dir = RIGHT;
+            paddle.setDir(RIGHT);
             break;
 
         default:
@@ -28,11 +29,11 @@ void Game::key_press(sf::Keyboard::Key k) {
 void Game::key_release(sf::Keyboard::Key k) {
     switch (k) {
         case sf::Keyboard::Left:
-            if (paddle_dir == LEFT) paddle_dir = NONE;
+            if (paddle.getDir() == LEFT) paddle.setDir(NONE);
             break;
 
         case sf::Keyboard::Right:
-            if (paddle_dir == RIGHT) paddle_dir = NONE;
+            if (paddle.getDir() == RIGHT) paddle.setDir(NONE);
             break;
 
         default:
@@ -45,14 +46,10 @@ Game::Game() : window(sf::VideoMode(800,600),"Break") {
     run = true;
     sheet.loadFromFile("res/sheet.png");
 
-    paddle = sf::Sprite(sheet,sf::IntRect(0,0,16,4));
+    paddle = Paddle(sheet,sf::IntRect(0,0,16,4));
     paddle.setScale(4.0,4.0);
     paddle.setPosition(400-paddle.getGlobalBounds().width/2,
                        600-paddle.getGlobalBounds().height-10);
-    paddle_dir = NONE;
-    paddle_speed = 400;
-
-    objects.push_back(&paddle);
 
     last_call = clock.getElapsedTime();
 }
@@ -83,16 +80,16 @@ void Game::update() {
     sf::Time recent_call = clock.getElapsedTime();
     float dt = (recent_call - last_call).asSeconds();
 
-    switch (paddle_dir) {
+    switch (paddle.getDir()) {
         case LEFT:
-            if (paddle.getGlobalBounds().left - paddle_speed*dt > 0.0) 
-                paddle.move(-paddle_speed*dt,0.0);
+            if (paddle.getGlobalBounds().left - paddle.getSpeed()*dt > 0.0) 
+                paddle.move(-paddle.getSpeed()*dt,0.0);
             break;
 
         case RIGHT:
-            if (paddle.getGlobalBounds().left + paddle_speed*dt 
+            if (paddle.getGlobalBounds().left + paddle.getSpeed()*dt 
                     < 800.0 - paddle.getGlobalBounds().width)
-                paddle.move(paddle_speed*dt,0.0);
+                paddle.move(paddle.getSpeed()*dt,0.0);
             break;
 
         case NONE:
@@ -104,9 +101,9 @@ void Game::update() {
 
 void Game::draw() {
     window.clear(sf::Color(200,200,200,255)); 
-    for (sf::Sprite* item : objects) {
-        window.draw(*item);
-    }
+
+    paddle.draw(window);
+
     window.display();
 }
 

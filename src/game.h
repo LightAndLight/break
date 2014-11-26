@@ -3,30 +3,20 @@
 
 #include<SFML/Graphics.hpp>
 #include<vector>
-
-enum Dir {
-    LEFT,
-    RIGHT,
-    NONE
-};
+#include "paddle.h"
 
 class Game {
     sf::RenderWindow window;
+    Paddle paddle;
     sf::Texture sheet;
-    sf::Sprite paddle;
 
     sf::Clock clock;
     sf::Time last_call;
-
-    Dir paddle_dir;
-    int paddle_speed;
 
     bool run;
     void key_press(sf::Keyboard::Key k);
     void key_release(sf::Keyboard::Key k);
     void quit();
-
-    std::vector<sf::Sprite*> objects;
 
     public:
         Game();
