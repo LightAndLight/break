@@ -4,10 +4,12 @@
 #include<SFML/Graphics.hpp>
 #include<vector>
 #include "paddle.h"
+#include "ball.h"
 
 class Game {
     sf::RenderWindow window;
     Paddle paddle;
+    Ball ball;
     sf::Texture sheet;
 
     sf::Clock clock;

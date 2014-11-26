@@ -23,7 +23,10 @@ class Paddle {
         void draw(sf::RenderWindow& w);
         void setScale(float x, float y);
         void setPosition(float x, float y);
-        sf::FloatRect getGlobalBounds();
+        float width();
+        float height();
+        float left();
+        float top();
         void move(float x, float y);
 
 };

@@ -1,8 +1,8 @@
 CC=clang++
 FLAGS=-std=c++11
 LINK=-lsfml-graphics -lsfml-window -lsfml-system
-OBJECTS=paddle.o game.o main.o
-HEADERS=paddle.h game.h
+OBJECTS=ball.o paddle.o game.o main.o
+HEADERS=ball.h paddle.h game.h
 
 all: break
 
