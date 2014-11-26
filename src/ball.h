@@ -16,6 +16,7 @@ class Ball {
         void reflectY();
         int getSpeed();
         void setPosition(float x, float y);
+        void setScale(float x, float y);
         void move(float x, float y);
         float width();
         float height();

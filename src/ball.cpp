@@ -28,6 +28,10 @@ void Ball::setPosition(float x, float y) {
     sprite.setPosition(x,y); 
 }
 
+void Ball::setScale(float x, float y) {
+    sprite.setScale(x,y); 
+}
+
 void Ball::move(float x, float y) {
     sprite.move(x,y); 
 }
