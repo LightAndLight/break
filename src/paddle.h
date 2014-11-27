@@ -4,26 +4,17 @@
 #include<SFML/Graphics.hpp>
 #include "bounded.h"
 
-namespace Direction {
-    enum Dir {
-        LEFT,
-        RIGHT,
-        NONE
-    };
-}
-
 class Paddle {
-    Direction::Dir direction;    
-    int speed;
+    sf::Vector2f motion;
     sf::Sprite sprite;
     Bounded box;
     
     public:
         Paddle();
         Paddle(sf::Texture& tex, sf::IntRect rect);
-        int getSpeed();
-        void setDir(Direction::Dir d);
-        Direction::Dir getDir();
+        float getSpeed();
+        void setMotion(sf::Vector2f vec);
+        sf::Vector2f getMotion();
         void draw(sf::RenderWindow& w);
         void setScale(float x, float y);
         void setPosition(float x, float y);
