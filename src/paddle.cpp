@@ -53,7 +53,7 @@ float Paddle::top() {
 
 void Paddle::move(float x, float y) {
     sprite.move(x,y);
-    box.setPosition(x,y);
+    box.move(x,y);
 }
 
 Bounded Paddle::getBB() {
