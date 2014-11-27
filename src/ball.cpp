@@ -12,6 +12,10 @@ sf::Vector2f Ball::getDir() {
     return direction;
 }
 
+void Ball::setDir(sf::Vector2f vec) {
+    direction = vec;
+}
+
 void Ball::reflectX() {
     direction = sf::Vector2f(direction.x,-direction.y);
 }

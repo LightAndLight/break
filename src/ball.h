@@ -12,6 +12,7 @@ class Ball {
         Ball();
         Ball(sf::Texture& tex,sf::IntRect rect);
         sf::Vector2f getDir();
+        void setDir(sf::Vector2f vec);
         void reflectX();
         void reflectY();
         int getSpeed();
