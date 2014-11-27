@@ -22,22 +22,22 @@ bool Bounded::intersects(Bounded b) {
 std::vector<Side> Bounded::intersectingSide(Bounded b) {
     std::vector<Side> sides;
     if (intersects(b)) {
-        if (right > b.getLeft()) {
+        if (b.getLeft() > left + getWidth()/2) {
             sides.push_back(RIGHT); 
             std::cout << "RIGHT" << std::endl;
         }
 
-        if (b.getRight() > left) {
+        if (b.getRight() < left + getWidth()/2) {
             sides.push_back(LEFT);
             std::cout << "LEFT" << std::endl;
         }
 
-        if (bottom > b.getTop()) {
+        if (b.getTop() > top + getHeight()/2) {
             sides.push_back(BOTTOM);
             std::cout << "BOTTOM" << std::endl;
         }
 
-        if (b.getBottom() > top) {
+        if (b.getBottom() < top + getHeight()/2) {
             sides.push_back(TOP);
             std::cout << "TOP" << std::endl;
         }
