@@ -24,6 +24,7 @@ class Game {
         Game();
         void events();
         void update();
+        void collisions();
         void draw();
         bool running();
 

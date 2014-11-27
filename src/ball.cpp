@@ -12,6 +12,10 @@ sf::Vector2f Ball::getDir() {
     return direction;
 }
 
+void Ball::setDir(sf::Vector2f vec) {
+    direction = vec;
+}
+
 void Ball::reflectX() {
     direction = sf::Vector2f(direction.x,-direction.y);
 }
@@ -46,4 +50,12 @@ float Ball::height() {
 
 void Ball::draw(sf::RenderWindow& w) {
     w.draw(sprite);
+}
+
+float Ball::top() {
+    return sprite.getGlobalBounds().top;
+}
+
+float Ball::left() {
+    return sprite.getGlobalBounds().left;
 }

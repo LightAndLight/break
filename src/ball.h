@@ -12,6 +12,7 @@ class Ball {
         Ball();
         Ball(sf::Texture& tex,sf::IntRect rect);
         sf::Vector2f getDir();
+        void setDir(sf::Vector2f vec);
         void reflectX();
         void reflectY();
         int getSpeed();
@@ -21,6 +22,8 @@ class Ball {
         float width();
         float height();
         void draw(sf::RenderWindow& w);
+        float top();
+        float left();
 };
 
 #endif // BALL_H
