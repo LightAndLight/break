@@ -1,6 +1,8 @@
 #include "bounded.h"
 
-Bounded::Bounded(sf::FloatRect rec) {
+Bounded::Bounded() {}
+
+Bounded::Bounded(sf::IntRect rec) {
     top = rec.top;
     left = rec.left;
     bottom = rec.top + rec.height;
@@ -60,5 +62,15 @@ float Bounded::getLeft() {
 
 float Bounded::getRight() {
     return right;
+}
+
+void Bounded::setPosition(float x, float y) {
+    left = x;
+    top = y;
+}
+
+void Bounded::move(float x, float y) {
+    left += x;
+    top += y;
 }
 

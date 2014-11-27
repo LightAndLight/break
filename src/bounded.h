@@ -19,13 +19,16 @@ class Bounded {
     float right;  
 
     public:
-        Bounded(sf::FloatRect rec);
+        Bounded();
+        Bounded(sf::IntRect rec);
         bool intersects(Bounded b);
         std::vector<Side> intersectingSide(Bounded b);
         float getTop();
         float getBottom();
         float getLeft();
         float getRight();
+        void setPosition(float x, float y);
+        void move(float x, float y);
 
 };
 
