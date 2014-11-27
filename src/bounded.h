@@ -28,6 +28,7 @@ class Bounded {
         float getLeft();
         float getRight();
         void setPosition(float x, float y);
+        void setScale(float x, float y);
         void move(float x, float y);
 
 };

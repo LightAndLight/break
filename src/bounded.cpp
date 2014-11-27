@@ -69,6 +69,11 @@ void Bounded::setPosition(float x, float y) {
     top = y;
 }
 
+void Bounded::setScale(float x, float y) {
+    right = left + (right - left)*x;
+    bottom = top + (bottom - top)*y;
+}
+
 void Bounded::move(float x, float y) {
     left += x;
     top += y;
