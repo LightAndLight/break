@@ -55,6 +55,7 @@ Game::Game() : window(sf::VideoMode(800,600),"Break") {
     ball = Ball(sheet,sf::IntRect(16,0,4,4));
     ball.setScale(4.0,4.0);
     ball.setPosition(400-ball.width()/2,300-ball.height()/2);
+    ball.setDir(sf::Vector2f(0.0,-1.0));
 
     last_call = clock.getElapsedTime();
 }
@@ -85,21 +86,27 @@ void Game::update() {
     sf::Time recent_call = clock.getElapsedTime();
     float dt = (recent_call - last_call).asSeconds();
 
+    int paddleSpeed = paddle.getSpeed();
+
     switch (paddle.getDir()) {
         case LEFT:
-            if (paddle.left() - paddle.getSpeed()*dt > 0.0) 
-                paddle.move(-paddle.getSpeed()*dt,0.0);
+            if (paddle.left() - paddleSpeed*dt > 0.0) 
+                paddle.move(-paddleSpeed*dt,0.0);
             break;
 
         case RIGHT:
-            if (paddle.left() + paddle.getSpeed()*dt 
+            if (paddle.left() + paddleSpeed*dt 
                     < 800.0 - paddle.width())
-                paddle.move(paddle.getSpeed()*dt,0.0);
+                paddle.move(paddleSpeed*dt,0.0);
             break;
 
         case NONE:
             break;
     }
+    
+    sf::Vector2f ballDir = ball.getDir();
+    int ballSpeed = ball.getSpeed();
+    ball.move(ballDir.x*ballSpeed*dt,ballDir.y*ballSpeed*dt);
 
     last_call = recent_call;
 }
