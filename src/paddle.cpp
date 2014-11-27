@@ -5,18 +5,19 @@ Paddle::Paddle() {}
 Paddle::Paddle(sf::Texture& tex,sf::IntRect rect) {
     sprite = sf::Sprite(tex,rect);
     speed = 400; 
-    direction = NONE;
+    direction = Direction::NONE;
+    box = Bounded(rect);
 }
 
 int Paddle::getSpeed() {
     return speed;
 }
 
-void Paddle::setDir(Dir d) {
+void Paddle::setDir(Direction::Dir d) {
     direction = d;
 }
 
-Dir Paddle::getDir() {
+Direction::Dir Paddle::getDir() {
     return direction;
 }
 
@@ -26,10 +27,12 @@ void Paddle::draw(sf::RenderWindow& w) {
 
 void Paddle::setScale(float x, float y) {
     sprite.setScale(x,y);
+    box.setScale(x,y);
 }
 
 void Paddle::setPosition(float x, float y) {
     sprite.setPosition(x,y);
+    box.setPosition(x,y);
 }
 
 float Paddle::width() {
@@ -50,4 +53,9 @@ float Paddle::top() {
 
 void Paddle::move(float x, float y) {
     sprite.move(x,y);
+    box.move(x,y);
+}
+
+Bounded Paddle::getBB() {
+    return box;
 }
