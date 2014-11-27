@@ -55,7 +55,7 @@ Game::Game() : window(sf::VideoMode(800,600),"Break") {
     ball = Ball(sheet,sf::IntRect(16,0,4,4));
     ball.setScale(4.0,4.0);
     ball.setPosition(400-ball.width()/2,300-ball.height()/2);
-    ball.setDir(sf::Vector2f(0.0,-1.0));
+    ball.setDir(sf::Vector2f(1.0,-0.25));
 
     last_call = clock.getElapsedTime();
 }
@@ -109,6 +109,24 @@ void Game::update() {
     ball.move(ballDir.x*ballSpeed*dt,ballDir.y*ballSpeed*dt);
 
     last_call = recent_call;
+}
+
+void Game::collisions() {
+    if (ball.top() <= 0) {
+        ball.reflectX();
+    }
+
+    if (ball.top() > 600 - ball.height()) {
+        ball.reflectX();
+    }
+
+    if (ball.left() <= 0) {
+        ball.reflectY();
+    }
+
+    if (ball.left() > 800 - ball.width()) {
+        ball.reflectY();
+    }
 }
 
 void Game::draw() {
