@@ -11,37 +11,37 @@ Bounded::Bounded(sf::IntRect rec) {
 
 bool Bounded::intersects(Bounded b) {
     if (right < b.getLeft()) {
-        return true;
-    } else if (b.getRight() < left) {
-        return true;
-    } else if (bottom < b.getTop()) {
-        return true;
-    } else if (b.getBottom() < top) {
-        return true;
-    } else {
         return false;
+    } else if (b.getRight() < left) {
+        return false;
+    } else if (bottom < b.getTop()) {
+        return false;
+    } else if (b.getBottom() < top) {
+        return false;
+    } else {
+        return true;
     }
 }
 
 std::vector<Side> Bounded::intersectingSide(Bounded b) {
     std::vector<Side> sides;
-    if (b.getLeft() < right) {
-        sides.push_back(RIGHT); 
-    }
+    if (intersects(b)) {
+        if (b.getLeft() < right) {
+            sides.push_back(RIGHT); 
+        }
 
-    if (b.getTop() < bottom) {
-        sides.push_back(BOTTOM);
-    }
+        if (b.getTop() < bottom) {
+            sides.push_back(BOTTOM);
+        }
 
-    if (left < b.getRight()) {
-        sides.push_back(LEFT);
-    }
+        if (left < b.getRight()) {
+            sides.push_back(LEFT);
+        }
 
-    if (top < b.getBottom()) {
-        sides.push_back(TOP);
-    }
-
-    if (sides.size() == 0) {
+        if (top < b.getBottom()) {
+            sides.push_back(TOP);
+        }
+    } else {
         sides.push_back(NONE);
     }
 
