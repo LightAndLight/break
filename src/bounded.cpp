@@ -10,14 +10,9 @@ Bounded::Bounded(sf::IntRect rec) {
 }
 
 bool Bounded::intersects(Bounded b) {
-    if (right < b.getLeft()) {
-        return false;
-    } else if (b.getRight() < left) {
-        return false;
-    } else if (bottom < b.getTop()) {
-        return false;
-    } else if (b.getBottom() < top) {
-        return false;
+    if (right < b.getLeft() || b.getRight() < left 
+        || bottom < b.getTop() || b.getBottom() < top) {
+        return false; 
     } else {
         return true;
     }
