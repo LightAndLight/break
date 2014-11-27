@@ -1,5 +1,4 @@
 #include "bounded.h"
-#include<iostream>
 
 Bounded::Bounded() {}
 
@@ -24,22 +23,18 @@ std::vector<Side> Bounded::intersectingSide(Bounded b) {
     if (intersects(b)) {
         if (b.getLeft() > left + getWidth()/2) {
             sides.push_back(RIGHT); 
-            std::cout << "RIGHT" << std::endl;
         }
 
         if (b.getRight() < left + getWidth()/2) {
             sides.push_back(LEFT);
-            std::cout << "LEFT" << std::endl;
         }
 
         if (b.getTop() > top + getHeight()/2) {
             sides.push_back(BOTTOM);
-            std::cout << "BOTTOM" << std::endl;
         }
 
         if (b.getBottom() < top + getHeight()/2) {
             sides.push_back(TOP);
-            std::cout << "TOP" << std::endl;
         }
 
     } else {
