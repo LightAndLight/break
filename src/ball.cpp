@@ -9,6 +9,13 @@ Ball::Ball(sf::Texture& tex, sf::IntRect rect) {
     box = Bounded(rect);
 }
 
+void Ball::setSpeed(float s) {
+    float mag = getSpeed();
+    float factor = s/mag;
+    motion.x *= factor;
+    motion.y *= factor;
+}
+
 sf::Vector2f Ball::getMotion() {
     return motion;
 }
