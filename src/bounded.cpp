@@ -21,16 +21,19 @@ bool Bounded::intersects(Bounded b) {
 Side Bounded::intersectingSide(Bounded b) {
     if (intersects(b)) {
 
-        float bRight = b.getRight();
-        float bLeft = b.getLeft();
-        float bBottom = b.getBottom();
-        float bTop = b.getTop();
+        float leftCollision = b.getRight() - left;
+        float rightCollision = right - b.getLeft();
+        float topCollision = b.getBottom() - top;
 
-        if ((bLeft < right || bRight > left) && bBottom > top) {
+        if (topCollision < leftCollision && topCollision < rightCollision) {
             return TOP;
-        } else if ((bBottom > top || bTop < bottom) && bLeft < right) {
+        }
+        
+        if (rightCollision < leftCollision && rightCollision < topCollision) {
             return RIGHT;
-        } else if ((bBottom > top || bTop < bottom) && bRight > left) {
+        } 
+        
+        if (leftCollision < topCollision && leftCollision < rightCollision) {
             return LEFT;
         }
 
