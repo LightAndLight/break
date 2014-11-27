@@ -32,6 +32,7 @@ class Paddle {
         float left();
         float top();
         void move(float x, float y);
+        Bounded getBB();
 
 };
 

@@ -26,6 +26,7 @@ class Ball {
         void draw(sf::RenderWindow& w);
         float top();
         float left();
+        Bounded getBB();
 };
 
 #endif // BALL_H

@@ -63,3 +63,7 @@ float Ball::top() {
 float Ball::left() {
     return sprite.getGlobalBounds().left;
 }
+
+Bounded Ball::getBB() {
+    return box;
+}
