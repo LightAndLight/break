@@ -34,9 +34,9 @@ Side Bounded::intersectingSide(Bounded b) {
             return LEFT;
         }
 
-    } else {
-        return NONE;
     }
+
+    return NONE;
 }
 
 float Bounded::getTop() {
