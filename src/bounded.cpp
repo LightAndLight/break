@@ -18,30 +18,25 @@ bool Bounded::intersects(Bounded b) {
     }
 }
 
-std::vector<Side> Bounded::intersectingSide(Bounded b) {
-    std::vector<Side> sides;
+Side Bounded::intersectingSide(Bounded b) {
     if (intersects(b)) {
-        if (b.getLeft() > left + getWidth()/2) {
-            sides.push_back(RIGHT); 
-        }
 
-        if (b.getRight() < left + getWidth()/2) {
-            sides.push_back(LEFT);
-        }
+        float bRight = b.getRight();
+        float bLeft = b.getLeft();
+        float bBottom = b.getBottom();
+        float bTop = b.getTop();
 
-        if (b.getTop() > top + getHeight()/2) {
-            sides.push_back(BOTTOM);
-        }
-
-        if (b.getBottom() < top + getHeight()/2) {
-            sides.push_back(TOP);
+        if ((bLeft < right || bRight > left) && bBottom > top) {
+            return TOP;
+        } else if ((bBottom > top || bTop < bottom) && bLeft < right) {
+            return RIGHT;
+        } else if ((bBottom > top || bTop < bottom) && bRight > left) {
+            return LEFT;
         }
 
     } else {
-        sides.push_back(NONE);
+        return NONE;
     }
-
-    return sides;
 }
 
 float Bounded::getTop() {
