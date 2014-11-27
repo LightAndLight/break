@@ -2,11 +2,13 @@
 #define BALL_H
 
 #include<SFML/Graphics.hpp>
+#include "bounded.h"
 
 class Ball {
     sf::Sprite sprite;
     sf::Vector2f direction;
     int speed;
+    Bounded box;
 
     public:
         Ball();
