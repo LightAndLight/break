@@ -2,24 +2,28 @@
 #define PADDLE_H
 
 #include<SFML/Graphics.hpp>
+#include "bounded.h"
 
-enum Dir {
-    LEFT,
-    RIGHT,
-    NONE
-};
+namespace Direction {
+    enum Dir {
+        LEFT,
+        RIGHT,
+        NONE
+    };
+}
 
 class Paddle {
-    Dir direction;    
+    Direction::Dir direction;    
     int speed;
     sf::Sprite sprite;
+    Bounded box;
     
     public:
         Paddle();
         Paddle(sf::Texture& tex, sf::IntRect rect);
         int getSpeed();
-        void setDir(Dir d);
-        Dir getDir();
+        void setDir(Direction::Dir d);
+        Direction::Dir getDir();
         void draw(sf::RenderWindow& w);
         void setScale(float x, float y);
         void setPosition(float x, float y);
