@@ -1,6 +1,7 @@
 #include "game.h"
 #include "paddle.h"
 #include "ball.h"
+#include "bounded.h"
 
 void Game::quit() {
     run = false;
@@ -14,11 +15,11 @@ void Game::key_press(sf::Keyboard::Key k) {
             break;
 
         case sf::Keyboard::Left:
-            paddle.setDir(LEFT);
+            paddle.setDir(Direction::LEFT);
             break;
 
         case sf::Keyboard::Right:
-            paddle.setDir(RIGHT);
+            paddle.setDir(Direction::RIGHT);
             break;
 
         default:
@@ -30,11 +31,11 @@ void Game::key_press(sf::Keyboard::Key k) {
 void Game::key_release(sf::Keyboard::Key k) {
     switch (k) {
         case sf::Keyboard::Left:
-            if (paddle.getDir() == LEFT) paddle.setDir(NONE);
+            if (paddle.getDir() == Direction::LEFT) paddle.setDir(Direction::NONE);
             break;
 
         case sf::Keyboard::Right:
-            if (paddle.getDir() == RIGHT) paddle.setDir(NONE);
+            if (paddle.getDir() == Direction::RIGHT) paddle.setDir(Direction::NONE);
             break;
 
         default:
@@ -55,7 +56,7 @@ Game::Game() : window(sf::VideoMode(800,600),"Break") {
     ball = Ball(sheet,sf::IntRect(16,0,4,4));
     ball.setScale(4.0,4.0);
     ball.setPosition(400-ball.width()/2,300-ball.height()/2);
-    ball.setDir(sf::Vector2f(1.0,-0.25));
+    ball.setDir(sf::Vector2f(0.1,-1.0));
 
     last_call = clock.getElapsedTime();
 }
@@ -89,18 +90,18 @@ void Game::update() {
     int paddleSpeed = paddle.getSpeed();
 
     switch (paddle.getDir()) {
-        case LEFT:
+        case Direction::LEFT:
             if (paddle.left() - paddleSpeed*dt > 0.0) 
                 paddle.move(-paddleSpeed*dt,0.0);
             break;
 
-        case RIGHT:
+        case Direction::RIGHT:
             if (paddle.left() + paddleSpeed*dt 
                     < 800.0 - paddle.width())
                 paddle.move(paddleSpeed*dt,0.0);
             break;
 
-        case NONE:
+        case Direction::NONE:
             break;
     }
     
@@ -126,6 +127,19 @@ void Game::collisions() {
 
     if (ball.left() > 800 - ball.width()) {
         ball.reflectY();
+    }
+
+    Bounded paddleBB = paddle.getBB();
+    Bounded ballBB = ball.getBB();
+    if (paddleBB.intersects(ballBB)) {
+        std::vector<Side> sides = paddleBB.intersectingSide(ballBB);
+        for (Side s : sides) {
+            if (s == LEFT || s == RIGHT) {
+                ball.reflectY();
+            } else if (s == TOP || s == BOTTOM) {
+                ball.reflectX();
+            }
+        }
     }
 }
 
