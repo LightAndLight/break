@@ -1,4 +1,5 @@
 #include "bounded.h"
+#include<iostream>
 
 Bounded::Bounded() {}
 
@@ -21,21 +22,26 @@ bool Bounded::intersects(Bounded b) {
 std::vector<Side> Bounded::intersectingSide(Bounded b) {
     std::vector<Side> sides;
     if (intersects(b)) {
-        if (b.getLeft() < right) {
+        if (right > b.getLeft()) {
             sides.push_back(RIGHT); 
+            std::cout << "RIGHT" << std::endl;
         }
 
-        if (b.getTop() < bottom) {
-            sides.push_back(BOTTOM);
-        }
-
-        if (left < b.getRight()) {
+        if (b.getRight() > left) {
             sides.push_back(LEFT);
+            std::cout << "LEFT" << std::endl;
         }
 
-        if (top < b.getBottom()) {
-            sides.push_back(TOP);
+        if (bottom > b.getTop()) {
+            sides.push_back(BOTTOM);
+            std::cout << "BOTTOM" << std::endl;
         }
+
+        if (b.getBottom() > top) {
+            sides.push_back(TOP);
+            std::cout << "TOP" << std::endl;
+        }
+
     } else {
         sides.push_back(NONE);
     }
@@ -81,3 +87,10 @@ void Bounded::move(float x, float y) {
     bottom += y;
 }
 
+float Bounded::getWidth() {
+    return right - left;
+}
+
+float Bounded::getHeight() {
+    return bottom - top;
+}
