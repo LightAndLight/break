@@ -13,13 +13,12 @@ void Game::key_press(sf::Keyboard::Key k) {
         case sf::Keyboard::Escape:
             quit();
             break;
-
-        case sf::Keyboard::Left:
-            paddle.setDir(Direction::LEFT);
+case sf::Keyboard::Left:
+            paddle.setMotion(sf::Vector2f(-400,0));
             break;
 
         case sf::Keyboard::Right:
-            paddle.setDir(Direction::RIGHT);
+            paddle.setMotion(sf::Vector2f(400,0));
             break;
 
         default:
@@ -31,11 +30,11 @@ void Game::key_press(sf::Keyboard::Key k) {
 void Game::key_release(sf::Keyboard::Key k) {
     switch (k) {
         case sf::Keyboard::Left:
-            if (paddle.getDir() == Direction::LEFT) paddle.setDir(Direction::NONE);
+            if (paddle.getMotion().x == -400) paddle.setMotion(sf::Vector2f(0,0));
             break;
 
         case sf::Keyboard::Right:
-            if (paddle.getDir() == Direction::RIGHT) paddle.setDir(Direction::NONE);
+            if (paddle.getMotion().x == 400) paddle.setMotion(sf::Vector2f(0,0));
             break;
 
         default:
@@ -56,7 +55,8 @@ Game::Game() : window(sf::VideoMode(800,600),"Break") {
     ball = Ball(sheet,sf::IntRect(16,0,4,4));
     ball.setScale(4.0,4.0);
     ball.setPosition(400-ball.width()/2,300-ball.height()/2);
-    ball.setDir(sf::Vector2f(0.1,-1.0));
+    ball.setMotion(sf::Vector2f(0.1,-1.0));
+    ball.setSpeed(300);
 
     last_call = clock.getElapsedTime();
 }
@@ -87,27 +87,11 @@ void Game::update() {
     sf::Time recent_call = clock.getElapsedTime();
     float dt = (recent_call - last_call).asSeconds();
 
-    int paddleSpeed = paddle.getSpeed();
-
-    switch (paddle.getDir()) {
-        case Direction::LEFT:
-            if (paddle.left() - paddleSpeed*dt > 0.0) 
-                paddle.move(-paddleSpeed*dt,0.0);
-            break;
-
-        case Direction::RIGHT:
-            if (paddle.left() + paddleSpeed*dt 
-                    < 800.0 - paddle.width())
-                paddle.move(paddleSpeed*dt,0.0);
-            break;
-
-        case Direction::NONE:
-            break;
-    }
-    
-    sf::Vector2f ballDir = ball.getDir();
-    int ballSpeed = ball.getSpeed();
-    ball.move(ballDir.x*ballSpeed*dt,ballDir.y*ballSpeed*dt);
+    sf::Vector2f paddleMotion = paddle.getMotion();
+    paddle.move(paddleMotion.x*dt,paddleMotion.y*dt);
+   
+    sf::Vector2f ballMotion = ball.getMotion();
+    ball.move(ballMotion.x*dt,ballMotion.y*dt);
 
     last_call = recent_call;
 }
