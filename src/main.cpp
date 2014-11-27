@@ -6,8 +6,8 @@ int main() {
 
     while (game.running()) {
         game.events();
-        game.update();
         game.collisions();
+        game.update();
         game.draw();
     }
 
