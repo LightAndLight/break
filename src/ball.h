@@ -22,6 +22,8 @@ class Ball {
         float width();
         float height();
         void draw(sf::RenderWindow& w);
+        float top();
+        float left();
 };
 
 #endif // BALL_H

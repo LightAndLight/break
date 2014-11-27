@@ -51,3 +51,11 @@ float Ball::height() {
 void Ball::draw(sf::RenderWindow& w) {
     w.draw(sprite);
 }
+
+float Ball::top() {
+    return sprite.getGlobalBounds().top;
+}
+
+float Ball::left() {
+    return sprite.getGlobalBounds().left;
+}
