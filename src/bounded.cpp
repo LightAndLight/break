@@ -65,8 +65,13 @@ float Bounded::getRight() {
 }
 
 void Bounded::setPosition(float x, float y) {
+    float width = right - left;
     left = x;
+    right = x + width;
+
+    float height = bottom - top;
     top = y;
+    bottom = y + height;
 }
 
 void Bounded::setScale(float x, float y) {
@@ -76,6 +81,8 @@ void Bounded::setScale(float x, float y) {
 
 void Bounded::move(float x, float y) {
     left += x;
+    right += x;
     top += y;
+    bottom += y;
 }
 
