@@ -24,17 +24,34 @@ Side Bounded::intersectingSide(Bounded b) {
         float leftCollision = b.getRight() - left;
         float rightCollision = right - b.getLeft();
         float topCollision = b.getBottom() - top;
+        float bottomCollision = bottom - b.getTop();
 
-        if (topCollision < leftCollision && topCollision < rightCollision) {
+        if (topCollision < leftCollision 
+            && topCollision < rightCollision 
+            && topCollision < bottomCollision) {
+
             return TOP;
         }
         
-        if (rightCollision < leftCollision && rightCollision < topCollision) {
+        if (rightCollision < leftCollision 
+            && rightCollision < topCollision
+            && rightCollision < bottomCollision) {
+
             return RIGHT;
         } 
         
-        if (leftCollision < topCollision && leftCollision < rightCollision) {
+        if (leftCollision < topCollision 
+            && leftCollision < rightCollision
+            && leftCollision < bottomCollision) {
+
             return LEFT;
+        }
+
+        if (bottomCollision < topCollision 
+            && bottomCollision < rightCollision
+            && bottomCollision < leftCollision) {
+
+            return BOTTOM;
         }
 
     }
