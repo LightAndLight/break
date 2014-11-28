@@ -3,8 +3,6 @@
 #include "ball.h"
 #include "bounded.h"
 
-#include<iostream>
-
 void Game::quit() {
     run = false;
     window.close();
@@ -126,6 +124,10 @@ void Game::collisions() {
         sf::Vector2f ballMotion = ball.getMotion();
         sf::Vector2f paddleMotion = paddle.getMotion();
 
+        float leftDist;
+        float rightDist;
+        float deflectFactor;
+
         switch(paddleBB.intersectingSide(ballBB)) {
             case LEFT:
                 ball.reflectY();
@@ -138,6 +140,17 @@ void Game::collisions() {
                     ball.setMotion(sf::Vector2f(ballMotion.x + paddleMotion.x,ballMotion.y));
                 break;
             case TOP:
+                leftDist = ball.right() - paddle.left();
+                rightDist = paddle.right() - ball.left();
+
+                if (leftDist < rightDist) {
+                    deflectFactor = (2/paddle.width())*leftDist - 1;
+                } else {
+                    deflectFactor = (2/paddle.width())*(paddle.width() - rightDist) - 1;
+                }
+
+                ball.setMotion(sf::Vector2f(ballMotion.x + deflectFactor*100,ballMotion.y));
+
                 ball.reflectX();
                 break;
             default:
