@@ -12,18 +12,24 @@ class Paddle {
     public:
         Paddle();
         Paddle(sf::Texture& tex, sf::IntRect rect);
+
         float getSpeed();
-        void setMotion(sf::Vector2f vec);
         sf::Vector2f getMotion();
-        void draw(sf::RenderWindow& w);
+        Bounded getBB();
+
+        void setMotion(sf::Vector2f vec);
         void setScale(float x, float y);
         void setPosition(float x, float y);
+
         float width();
         float height();
         float left();
         float top();
+        float right();
+
         void move(float x, float y);
-        Bounded getBB();
+
+        void draw(sf::RenderWindow& w);
 
 };
 
