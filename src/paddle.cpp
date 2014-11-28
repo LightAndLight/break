@@ -59,3 +59,7 @@ void Paddle::move(float x, float y) {
 Bounded Paddle::getBB() {
     return box;
 }
+
+float Paddle::right() {
+    return left() + width();
+}

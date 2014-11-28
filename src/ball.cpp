@@ -74,3 +74,7 @@ float Ball::left() {
 Bounded Ball::getBB() {
     return box;
 }
+
+float Ball::right() {
+    return left() + width();
+}

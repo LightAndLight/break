@@ -30,6 +30,7 @@ class Ball {
         float height();
         float top();
         float left();
+        float right();
 
         void draw(sf::RenderWindow& w);
 };
