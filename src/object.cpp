@@ -34,7 +34,7 @@ float Object::left() {
 }
 
 float Object::right() {
-    return sprite.getGlobalBounds().left;
+    return left() + width();
 }
 
 float Object::top() {
@@ -42,7 +42,7 @@ float Object::top() {
 }
 
 float Object::bottom() {
-    return sprite.getGlobalBounds().top;
+    return top() + height();
 }
 
 void Object::move(float x, float y) {
