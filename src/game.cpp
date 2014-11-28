@@ -3,6 +3,8 @@
 #include "ball.h"
 #include "bounded.h"
 
+#include<iostream>
+
 void Game::quit() {
     run = false;
     window.close();
@@ -49,17 +51,21 @@ Game::Game() : window(sf::VideoMode(800,600),"Break") {
 
     paddle = Paddle(sheet,sf::IntRect(0,0,16,4));
     paddle.setScale(4.0,4.0);
-    paddle.setPosition(400-paddle.width()/2,
-                       600-paddle.height()-10);
 
     ball = Ball(sheet,sf::IntRect(16,0,4,4));
     ball.setScale(4.0,4.0);
-    ball.setPosition(400-ball.width()/2,300-ball.height()/2);
-    ball.setMotion(sf::Vector2f(0.1,-1.0));
-    ball.setSpeed(300);
 
+    init();
+}
+
+void Game::init() {
+    paddle.setPosition(400-paddle.width()/2,600-paddle.height()-10);
+    ball.setPosition(400-ball.width()/2,300-ball.height()/2);
+    ball.setMotion(sf::Vector2f(0.1,1));
+    ball.setSpeed(300);
     last_call = clock.getElapsedTime();
 }
+
 
 void Game::events() {
     sf::Event event;
@@ -101,8 +107,8 @@ void Game::collisions() {
         ball.reflectX();
     }
 
-    if (ball.top() > 600 - ball.height()) {
-        ball.reflectX();
+    if (ball.top() > 600) {
+        init();
     }
 
     if (ball.left() <= 0) {
@@ -115,14 +121,27 @@ void Game::collisions() {
 
     Bounded paddleBB = paddle.getBB();
     Bounded ballBB = ball.getBB();
+
     if (paddleBB.intersects(ballBB)) {
-        std::vector<Side> sides = paddleBB.intersectingSide(ballBB);
-        for (Side s : sides) {
-            if (s == LEFT || s == RIGHT) {
+        sf::Vector2f ballMotion = ball.getMotion();
+        sf::Vector2f paddleMotion = paddle.getMotion();
+
+        switch(paddleBB.intersectingSide(ballBB)) {
+            case LEFT:
                 ball.reflectY();
-            } else if (s == TOP || s == BOTTOM) {
+                if (paddleMotion.x != 0) 
+                    ball.setMotion(sf::Vector2f(ballMotion.x + paddleMotion.x,ballMotion.y));
+                break;
+            case RIGHT:
+                ball.reflectY();
+                if (paddleMotion.x != 0) 
+                    ball.setMotion(sf::Vector2f(ballMotion.x + paddleMotion.x,ballMotion.y));
+                break;
+            case TOP:
                 ball.reflectX();
-            }
+                break;
+            default:
+                break;
         }
     }
 }
