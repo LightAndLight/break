@@ -1,7 +1,4 @@
 #include "game.h"
-#include "paddle.h"
-#include "ball.h"
-#include "bounded.h"
 
 void Game::quit() {
     run = false;
@@ -53,14 +50,21 @@ Game::Game() : window(sf::VideoMode(800,600),"Break") {
     ball = Ball(sheet,sf::IntRect(16,0,4,4));
     ball.setScale(4.0,4.0);
 
+    brick = Brick(sheet,sf::IntRect(0,4,12,8));
+    brick.setScale(4.0,4.0);
+
     init();
 }
 
 void Game::init() {
     paddle.setPosition(400-paddle.width()/2,600-paddle.height()-10);
+
     ball.setPosition(400-ball.width()/2,300-ball.height()/2);
-    ball.setMotion(sf::Vector2f(0.1,1));
+    ball.setMotion(sf::Vector2f(0,1));
     ball.setSpeed(300);
+
+    brick.setPosition(400-brick.width()/2,0);
+
     last_call = clock.getElapsedTime();
 }
 
@@ -140,18 +144,21 @@ void Game::collisions() {
                     ball.setMotion(sf::Vector2f(ballMotion.x + paddleMotion.x,ballMotion.y));
                 break;
             case TOP:
-                leftDist = ball.right() - paddle.left();
-                rightDist = paddle.right() - ball.left();
+                leftDist = ball.right() - paddle.left() - ball.width()/2;
+                rightDist = paddle.right() - ball.left() - ball.width()/2;
 
                 if (leftDist < rightDist) {
                     deflectFactor = (2/paddle.width())*leftDist - 1;
-                } else {
+                } else if (rightDist < leftDist) {
                     deflectFactor = (2/paddle.width())*(paddle.width() - rightDist) - 1;
+                } else {
+                    deflectFactor = 0;
                 }
 
                 ball.setMotion(sf::Vector2f(ballMotion.x + deflectFactor*100,ballMotion.y));
 
                 ball.reflectX();
+
                 break;
             default:
                 break;
@@ -164,6 +171,7 @@ void Game::draw() {
 
     paddle.draw(window);
     ball.draw(window);
+    brick.draw(window);
 
     window.display();
 }

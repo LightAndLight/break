@@ -5,11 +5,13 @@
 #include<vector>
 #include "paddle.h"
 #include "ball.h"
+#include "brick.h"
 
 class Game {
     sf::RenderWindow window;
     Paddle paddle;
     Ball ball;
+    Brick brick;
     sf::Texture sheet;
 
     sf::Clock clock;
