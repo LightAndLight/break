@@ -50,8 +50,15 @@ Game::Game() : window(sf::VideoMode(800,600),"Break") {
     ball = Ball(sheet,sf::IntRect(16,0,4,4));
     ball.setScale(4.0,4.0);
 
-    brick = Brick(sheet,sf::IntRect(0,4,12,8));
+    Brick brick(sheet,sf::IntRect(0,4,12,8));
     brick.setScale(4.0,4.0);
+
+    std::vector<Brick> row;
+    for (int i = 0; i < 8; ++i) {
+        brick.setPosition(200+70*i,200);
+        row.push_back(brick);
+    }
+    bricks.push_back(row);
 
     init();
 }
@@ -63,7 +70,6 @@ void Game::init() {
     ball.setMotion(sf::Vector2f(0,1));
     ball.setSpeed(300);
 
-    brick.setPosition(400-brick.width()/2,0);
 
     last_call = clock.getElapsedTime();
 }
@@ -122,24 +128,29 @@ void Game::collisions() {
     }
 
     Bounded ballBB = ball.getBB();
-    Bounded brickBB = brick.getBB();
 
-    if (brickBB.intersects(ballBB)) {
-        switch (brickBB.intersectingSide(ballBB)) {
-            case LEFT:
-                ball.reflectY();
-                break;
-            case RIGHT:
-                ball.reflectY();
-                break;
-            case TOP:
-                ball.reflectX();
-                break;
-            case BOTTOM:
-                ball.reflectX();
-                break;
-            default:
-                break;
+    for (std::vector<Brick> row : bricks) {
+        for (Brick b : row) {
+            Bounded brickBB = b.getBB();
+
+            if (brickBB.intersects(ballBB)) {
+                switch (brickBB.intersectingSide(ballBB)) {
+                    case LEFT:
+                        ball.reflectY();
+                        break;
+                    case RIGHT:
+                        ball.reflectY();
+                        break;
+                    case TOP:
+                        ball.reflectX();
+                        break;
+                    case BOTTOM:
+                        ball.reflectX();
+                        break;
+                    default:
+                        break;
+                }
+            }
         }
     }
 
@@ -192,7 +203,11 @@ void Game::draw() {
 
     paddle.draw(window);
     ball.draw(window);
-    brick.draw(window);
+    for (std::vector<Brick> row : bricks) {
+        for (Brick b : row) {
+            b.draw(window);
+        }
+    }
 
     window.display();
 }

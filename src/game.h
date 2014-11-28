@@ -11,7 +11,7 @@ class Game {
     sf::RenderWindow window;
     Paddle paddle;
     Ball ball;
-    Brick brick;
+    std::vector<std::vector<Brick> > bricks;
     sf::Texture sheet;
 
     sf::Clock clock;
