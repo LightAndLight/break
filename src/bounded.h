@@ -8,7 +8,6 @@ enum Side {
     LEFT,
     RIGHT,
     TOP,
-    BOTTOM,
     NONE
 };
 
@@ -22,7 +21,7 @@ class Bounded {
         Bounded();
         Bounded(sf::IntRect rec);
         bool intersects(Bounded b);
-        std::vector<Side> intersectingSide(Bounded b);
+        Side intersectingSide(Bounded b);
         float getTop();
         float getBottom();
         float getLeft();

@@ -1,32 +1,39 @@
 #include "ball.h"
+#include<cmath>
 
 Ball::Ball() {}
 
 Ball::Ball(sf::Texture& tex, sf::IntRect rect) {
     sprite = sf::Sprite(tex,rect);
-    direction = sf::Vector2f(0.0,0.0);
-    speed = 300;
+    motion = sf::Vector2f(0.0,0.0);
     box = Bounded(rect);
 }
 
-sf::Vector2f Ball::getDir() {
-    return direction;
+void Ball::setSpeed(float s) {
+    float mag = getSpeed();
+    float factor = s/mag;
+    motion.x *= factor;
+    motion.y *= factor;
 }
 
-void Ball::setDir(sf::Vector2f vec) {
-    direction = vec;
+sf::Vector2f Ball::getMotion() {
+    return motion;
+}
+
+void Ball::setMotion(sf::Vector2f vec) {
+    motion = vec;
 }
 
 void Ball::reflectX() {
-    direction = sf::Vector2f(direction.x,-direction.y);
+    motion.y *= -1;
 }
 
 void Ball::reflectY() {
-    direction = sf::Vector2f(-direction.x,direction.y);
+    motion.x *= -1;
 }
 
-int Ball::getSpeed() {
-    return speed;
+float Ball::getSpeed() {
+    return std::sqrt(std::pow(motion.x,2) + std::pow(motion.y,2));
 }
 
 void Ball::setPosition(float x, float y) {

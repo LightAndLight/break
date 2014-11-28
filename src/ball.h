@@ -6,27 +6,32 @@
 
 class Ball {
     sf::Sprite sprite;
-    sf::Vector2f direction;
-    int speed;
+    sf::Vector2f motion;
     Bounded box;
 
     public:
         Ball();
         Ball(sf::Texture& tex,sf::IntRect rect);
-        sf::Vector2f getDir();
-        void setDir(sf::Vector2f vec);
-        void reflectX();
-        void reflectY();
-        int getSpeed();
+
+        sf::Vector2f getMotion();
+        Bounded getBB();
+        float getSpeed();
+
+        void setMotion(sf::Vector2f vec);
         void setPosition(float x, float y);
         void setScale(float x, float y);
+        void setSpeed(float s);
+
+        void reflectX();
+        void reflectY();
         void move(float x, float y);
+
         float width();
         float height();
-        void draw(sf::RenderWindow& w);
         float top();
         float left();
-        Bounded getBB();
+
+        void draw(sf::RenderWindow& w);
 };
 
 #endif // BALL_H

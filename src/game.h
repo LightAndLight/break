@@ -22,6 +22,7 @@ class Game {
 
     public:
         Game();
+        void init();
         void events();
         void update();
         void collisions();
