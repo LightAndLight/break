@@ -121,8 +121,29 @@ void Game::collisions() {
         ball.reflectY();
     }
 
-    Bounded paddleBB = paddle.getBB();
     Bounded ballBB = ball.getBB();
+    Bounded brickBB = brick.getBB();
+
+    if (brickBB.intersects(ballBB)) {
+        switch (brickBB.intersectingSide(ballBB)) {
+            case LEFT:
+                ball.reflectY();
+                break;
+            case RIGHT:
+                ball.reflectY();
+                break;
+            case TOP:
+                ball.reflectX();
+                break;
+            case BOTTOM:
+                ball.reflectX();
+                break;
+            default:
+                break;
+        }
+    }
+
+    Bounded paddleBB = paddle.getBB();
 
     if (paddleBB.intersects(ballBB)) {
         sf::Vector2f ballMotion = ball.getMotion();
@@ -132,7 +153,7 @@ void Game::collisions() {
         float rightDist;
         float deflectFactor;
 
-        switch(paddleBB.intersectingSide(ballBB)) {
+        switch (paddleBB.intersectingSide(ballBB)) {
             case LEFT:
                 ball.reflectY();
                 if (paddleMotion.x != 0) 
