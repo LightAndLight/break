@@ -46,9 +46,20 @@ Game::Game() : window(sf::VideoMode(800,600),"Break") {
 
     paddle = Paddle(sheet,sf::IntRect(0,0,16,4));
     paddle.setScale(4.0,4.0);
+    paddle.setColor(255,0,0);
 
     ball = Ball(sheet,sf::IntRect(16,0,4,4));
     ball.setScale(4.0,4.0);
+
+    init();
+}
+
+void Game::init() {
+    paddle.setPosition(400-paddle.width()/2,600-paddle.height()-10);
+
+    ball.setPosition(400-ball.width()/2,300-ball.height()/2);
+    ball.setMotion(sf::Vector2f(0,1));
+    ball.setSpeed(300);
 
     Brick brick(sheet,sf::IntRect(0,4,12,8));
     brick.setScale(4.0,4.0);
@@ -61,17 +72,6 @@ Game::Game() : window(sf::VideoMode(800,600),"Break") {
         }
         bricks.push_back(row);
     }
-
-    init();
-}
-
-void Game::init() {
-    paddle.setPosition(400-paddle.width()/2,600-paddle.height()-10);
-
-    ball.setPosition(400-ball.width()/2,300-ball.height()/2);
-    ball.setMotion(sf::Vector2f(0,1));
-    ball.setSpeed(300);
-
 
     last_call = clock.getElapsedTime();
 }
@@ -113,6 +113,9 @@ void Game::update() {
 }
 
 void Game::collisions() {
+
+    // ball and wall checking
+
     if (ball.top() <= 0) {
         ball.reflectX();
     }
@@ -129,13 +132,21 @@ void Game::collisions() {
         ball.reflectY();
     }
 
+    // ball and brick collision - naive
+
     Bounded ballBB = ball.getBB();
 
-    for (std::vector<Brick> row : bricks) {
-        for (Brick b : row) {
+    for (std::vector<Brick>& row : bricks) {
+        for (Brick& b : row) {
             Bounded brickBB = b.getBB();
 
-            if (brickBB.intersects(ballBB)) {
+            if (b.isVisible() && brickBB.intersects(ballBB)) {
+
+                b.recieveHit();
+                if (b.hitsRemaining() == 0) {
+                    b.hide();
+                }
+
                 switch (brickBB.intersectingSide(ballBB)) {
                     case LEFT:
                         ball.reflectY();
@@ -207,7 +218,9 @@ void Game::draw() {
     ball.draw(window);
     for (std::vector<Brick> row : bricks) {
         for (Brick b : row) {
-            b.draw(window);
+            if (b.isVisible()) {
+                b.draw(window);
+            }
         }
     }
 

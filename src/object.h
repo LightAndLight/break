@@ -16,6 +16,7 @@ class Object {
 
         void setScale(float x, float y);
         void setPosition(float x, float y);
+        void setColor(int r, int g, int b);
 
         float width();
         float height();

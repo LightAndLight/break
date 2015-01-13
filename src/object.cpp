@@ -21,6 +21,10 @@ void Object::setPosition(float x, float y) {
     box.setPosition(x,y);
 }
 
+void Object::setColor(int r, int g, int b) {
+    sprite.setColor(sf::Color(r,g,b));
+}
+
 float Object::width() {
     return sprite.getGlobalBounds().width;
 }
