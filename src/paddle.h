@@ -2,12 +2,10 @@
 #define PADDLE_H
 
 #include<SFML/Graphics.hpp>
-#include "bounded.h"
+#include "object.h"
 
-class Paddle {
+class Paddle : public Object {
     sf::Vector2f motion;
-    sf::Sprite sprite;
-    Bounded box;
     
     public:
         Paddle();
@@ -15,22 +13,8 @@ class Paddle {
 
         float getSpeed();
         sf::Vector2f getMotion();
-        Bounded getBB();
 
         void setMotion(sf::Vector2f vec);
-        void setScale(float x, float y);
-        void setPosition(float x, float y);
-
-        float width();
-        float height();
-        float left();
-        float top();
-        float right();
-
-        void move(float x, float y);
-
-        void draw(sf::RenderWindow& w);
-
 };
 
 #endif // PADDLE_H

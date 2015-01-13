@@ -1,7 +1,4 @@
 #include "game.h"
-#include "paddle.h"
-#include "ball.h"
-#include "bounded.h"
 
 void Game::quit() {
     run = false;
@@ -53,14 +50,29 @@ Game::Game() : window(sf::VideoMode(800,600),"Break") {
     ball = Ball(sheet,sf::IntRect(16,0,4,4));
     ball.setScale(4.0,4.0);
 
+    Brick brick(sheet,sf::IntRect(0,4,12,8));
+    brick.setScale(4.0,4.0);
+
+    for (int i = 0; i < 5; ++i) {
+        std::vector<Brick> row;
+        for (int j = 0; j < 8; ++j) {
+            brick.setPosition(40+j*96,i*64);
+            row.push_back(brick);
+        }
+        bricks.push_back(row);
+    }
+
     init();
 }
 
 void Game::init() {
     paddle.setPosition(400-paddle.width()/2,600-paddle.height()-10);
+
     ball.setPosition(400-ball.width()/2,300-ball.height()/2);
-    ball.setMotion(sf::Vector2f(0.1,1));
+    ball.setMotion(sf::Vector2f(0,1));
     ball.setSpeed(300);
+
+
     last_call = clock.getElapsedTime();
 }
 
@@ -117,8 +129,34 @@ void Game::collisions() {
         ball.reflectY();
     }
 
-    Bounded paddleBB = paddle.getBB();
     Bounded ballBB = ball.getBB();
+
+    for (std::vector<Brick> row : bricks) {
+        for (Brick b : row) {
+            Bounded brickBB = b.getBB();
+
+            if (brickBB.intersects(ballBB)) {
+                switch (brickBB.intersectingSide(ballBB)) {
+                    case LEFT:
+                        ball.reflectY();
+                        break;
+                    case RIGHT:
+                        ball.reflectY();
+                        break;
+                    case TOP:
+                        ball.reflectX();
+                        break;
+                    case BOTTOM:
+                        ball.reflectX();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
+    Bounded paddleBB = paddle.getBB();
 
     if (paddleBB.intersects(ballBB)) {
         sf::Vector2f ballMotion = ball.getMotion();
@@ -128,7 +166,7 @@ void Game::collisions() {
         float rightDist;
         float deflectFactor;
 
-        switch(paddleBB.intersectingSide(ballBB)) {
+        switch (paddleBB.intersectingSide(ballBB)) {
             case LEFT:
                 ball.reflectY();
                 if (paddleMotion.x != 0) 
@@ -140,18 +178,21 @@ void Game::collisions() {
                     ball.setMotion(sf::Vector2f(ballMotion.x + paddleMotion.x,ballMotion.y));
                 break;
             case TOP:
-                leftDist = ball.right() - paddle.left();
-                rightDist = paddle.right() - ball.left();
+                leftDist = ball.right() - paddle.left() - ball.width()/2;
+                rightDist = paddle.right() - ball.left() - ball.width()/2;
 
                 if (leftDist < rightDist) {
                     deflectFactor = (2/paddle.width())*leftDist - 1;
-                } else {
+                } else if (rightDist < leftDist) {
                     deflectFactor = (2/paddle.width())*(paddle.width() - rightDist) - 1;
+                } else {
+                    deflectFactor = 0;
                 }
 
                 ball.setMotion(sf::Vector2f(ballMotion.x + deflectFactor*100,ballMotion.y));
 
                 ball.reflectX();
+
                 break;
             default:
                 break;
@@ -164,6 +205,11 @@ void Game::draw() {
 
     paddle.draw(window);
     ball.draw(window);
+    for (std::vector<Brick> row : bricks) {
+        for (Brick b : row) {
+            b.draw(window);
+        }
+    }
 
     window.display();
 }
