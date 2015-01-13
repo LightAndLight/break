@@ -53,12 +53,14 @@ Game::Game() : window(sf::VideoMode(800,600),"Break") {
     Brick brick(sheet,sf::IntRect(0,4,12,8));
     brick.setScale(4.0,4.0);
 
-    std::vector<Brick> row;
-    for (int i = 0; i < 8; ++i) {
-        brick.setPosition(200+70*i,200);
-        row.push_back(brick);
+    for (int i = 0; i < 5; ++i) {
+        std::vector<Brick> row;
+        for (int j = 0; j < 8; ++j) {
+            brick.setPosition(40+j*96,i*64);
+            row.push_back(brick);
+        }
+        bricks.push_back(row);
     }
-    bricks.push_back(row);
 
     init();
 }
