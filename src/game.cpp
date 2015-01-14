@@ -50,18 +50,6 @@ Game::Game() : window(sf::VideoMode(800,600),"Break") {
     ball = Ball(sheet,sf::IntRect(16,0,4,4));
     ball.setScale(4.0,4.0);
 
-    Brick brick(sheet,sf::IntRect(0,4,12,8));
-    brick.setScale(4.0,4.0);
-
-    for (int i = 0; i < 5; ++i) {
-        std::vector<Brick> row;
-        for (int j = 0; j < 8; ++j) {
-            brick.setPosition(40+j*96,i*64);
-            row.push_back(brick);
-        }
-        bricks.push_back(row);
-    }
-
     init();
 }
 
@@ -72,6 +60,19 @@ void Game::init() {
     ball.setMotion(sf::Vector2f(0,1));
     ball.setSpeed(300);
 
+    Brick brick(sheet,sf::IntRect(0,4,12,8));
+    brick.setScale(4.0,4.0);
+
+    bricks.clear();
+
+    for (int i = 0; i < 5; ++i) {
+        std::vector<Brick> row;
+        for (int j = 0; j < 8; ++j) {
+            brick.setPosition(40+j*96,i*64);
+            row.push_back(brick);
+        }
+        bricks.push_back(row);
+    }
 
     last_call = clock.getElapsedTime();
 }
@@ -101,7 +102,7 @@ void Game::events() {
 
 void Game::update() {
     sf::Time recent_call = clock.getElapsedTime();
-    float dt = (recent_call - last_call).asSeconds();
+    dt = (recent_call - last_call).asSeconds();
 
     sf::Vector2f paddleMotion = paddle.getMotion();
     paddle.move(paddleMotion.x*dt,paddleMotion.y*dt);
@@ -113,6 +114,9 @@ void Game::update() {
 }
 
 void Game::collisions() {
+
+    // ball and wall checking
+
     if (ball.top() <= 0) {
         ball.reflectX();
     }
@@ -129,13 +133,22 @@ void Game::collisions() {
         ball.reflectY();
     }
 
-    Bounded ballBB = ball.getBB();
+    // ball and brick collision - naive
 
-    for (std::vector<Brick> row : bricks) {
-        for (Brick b : row) {
+    Bounded ballBB = ball.getBB();
+    ballBB.move(ball.getMotion().x*dt,ball.getMotion().y*dt);
+
+    for (std::vector<Brick>& row : bricks) {
+        for (Brick& b : row) {
             Bounded brickBB = b.getBB();
 
-            if (brickBB.intersects(ballBB)) {
+            if (b.isVisible() && brickBB.intersects(ballBB)) {
+
+                b.recieveHit();
+                if (b.hitsRemaining() == 0) {
+                    b.hide();
+                }
+
                 switch (brickBB.intersectingSide(ballBB)) {
                     case LEFT:
                         ball.reflectY();
@@ -207,7 +220,9 @@ void Game::draw() {
     ball.draw(window);
     for (std::vector<Brick> row : bricks) {
         for (Brick b : row) {
-            b.draw(window);
+            if (b.isVisible()) {
+                b.draw(window);
+            }
         }
     }
 
