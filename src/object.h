@@ -18,6 +18,8 @@ class Object {
         void setPosition(float x, float y);
         void setColor(int r, int g, int b);
 
+        sf::Vector2f getPosition();
+
         float width();
         float height();
         float left();

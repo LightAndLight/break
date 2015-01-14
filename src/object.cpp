@@ -25,6 +25,10 @@ void Object::setColor(int r, int g, int b) {
     sprite.setColor(sf::Color(r,g,b));
 }
 
+sf::Vector2f Object::getPosition() {
+    return sprite.getPosition();
+}
+
 float Object::width() {
     return sprite.getGlobalBounds().width;
 }
