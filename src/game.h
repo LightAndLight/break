@@ -17,6 +17,8 @@ class Game {
     sf::Clock clock;
     sf::Time last_call;
 
+    float dt;
+
     bool run;
     void key_press(sf::Keyboard::Key k);
     void key_release(sf::Keyboard::Key k);

@@ -46,7 +46,6 @@ Game::Game() : window(sf::VideoMode(800,600),"Break") {
 
     paddle = Paddle(sheet,sf::IntRect(0,0,16,4));
     paddle.setScale(4.0,4.0);
-    paddle.setColor(255,0,0);
 
     ball = Ball(sheet,sf::IntRect(16,0,4,4));
     ball.setScale(4.0,4.0);
@@ -63,6 +62,8 @@ void Game::init() {
 
     Brick brick(sheet,sf::IntRect(0,4,12,8));
     brick.setScale(4.0,4.0);
+
+    bricks.clear();
 
     for (int i = 0; i < 5; ++i) {
         std::vector<Brick> row;
@@ -101,7 +102,7 @@ void Game::events() {
 
 void Game::update() {
     sf::Time recent_call = clock.getElapsedTime();
-    float dt = (recent_call - last_call).asSeconds();
+    dt = (recent_call - last_call).asSeconds();
 
     sf::Vector2f paddleMotion = paddle.getMotion();
     paddle.move(paddleMotion.x*dt,paddleMotion.y*dt);
@@ -135,6 +136,7 @@ void Game::collisions() {
     // ball and brick collision - naive
 
     Bounded ballBB = ball.getBB();
+    ballBB.move(ball.getMotion().x*dt,ball.getMotion().y*dt);
 
     for (std::vector<Brick>& row : bricks) {
         for (Brick& b : row) {
